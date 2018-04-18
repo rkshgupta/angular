@@ -6,7 +6,7 @@ import { User } from '../model/user.model';
 @Injectable()
 export class UserService {
 
-	private serviceUrl = "./assets/users.json";
+	private serviceUrl = "./assets/jobs.json";
 
   constructor(private http: HttpClient) {
         this.getUser().subscribe(data => {

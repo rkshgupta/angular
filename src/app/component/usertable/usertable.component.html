@@ -1,44 +1,57 @@
 <div class="example-container mat-elevation-z8">
 	<div class="example-container input">
+		<mat-form-field>
+      		<input matInput (input)="onSearchChange($event.target.value, 'owner')" placeholder="owner">
+    	</mat-form-field>
     	<mat-form-field>
-      		<input matInput #filter placeholder="Filter users">
+      		<input matInput (input)="onSearchChange($event.target.value, 'jobname')" placeholder="jobname">
+    	</mat-form-field>
+    	<mat-form-field>
+      		<input matInput (input)="onSearchChange($event.target.value, 'location')" placeholder="location">
+    	</mat-form-field>
+    	<mat-form-field>
+      		<input matInput (input)="onSearchChange($event.target.value, 'jobcode')" placeholder="jobcode">
+    	</mat-form-field>
+    	<mat-form-field>
+      		<input matInput (input)="onSearchChange($event.target.value, 'status')" placeholder="status">
     	</mat-form-field>
   	</div>
-	<mat-table [dataSource] = "dataSource" matSort matSortActive="name" matSortDirection="asc" matSortDisableClear>
-		<ng-container matColumnDef="name">
-			<mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-			<mat-form-field>
-				<input matInput placeholder="">
-			</mat-form-field>
-			<mat-cell *matCellDef="let user">{{user.name}}</mat-cell>
-		</ng-container> @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+	<mat-table [dataSource] = "dataSource" matSort matSortActive="created" matSortDirection="desc" matSortDisableClear>
 
-
-		<ng-container matColumnDef="email">
-			<mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
-			<mat-form-field>
-				<input matInput placeholder="">
-			</mat-form-field>
-			<mat-cell *matCellDef="let user">{{user.email}}</mat-cell>
+		<ng-container matColumnDef="owner">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Owner</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.jobmembers.fName}} {{ user.jobmembers.lName}}</mat-cell>
 		</ng-container>
-		<ng-container matColumnDef="phone">
-			<mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
-			<mat-form-field>
-				<input matInput placeholder="">
-		@ViewChild('filter') filter: ElementRef;	</mat-form-field>
-			<mat-cell *matCellDef="let user">{{user.phone}}</mat-cell>
+		<ng-container matColumnDef="title">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Job Title</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.name}}</mat-cell>
 		</ng-container>
-		<ng-container matColumnDef="company">
-			<mat-header-cell *matHeaderCellDef mat-sort-header>Company</mat-header-cell>
-			<mat-form-field>
-				<input matInput placeholder="">
-			</mat-form-field>
-			<mat-cell *matCellDef="let user">{{user.company.name}}</mat-cell>
+		<ng-container matColumnDef="location">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Location</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.joblocation}}</mat-cell>
 		</ng-container>
-		<mat-header-row *matHeaderRowDef="displayedColumns" color="primary"><mat-form-field>
-				<input matInput placeholder="Hello" value="sfasfsa">
-			</mat-form-field></mat-header-row>
+		<ng-container matColumnDef="jobcode">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Job Code</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.jobcode}}</mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="client">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Client</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.clientName}}</mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="status">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Status</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.jobStatus}}</mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="applicants">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Applicants</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.applicants}}</mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="created">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Created</mat-header-cell>
+			<mat-cell *matCellDef="let user">{{user.job.date_entered | date : format : timezone}}</mat-cell>
+		</ng-container>
+		<mat-header-row *matHeaderRowDef="displayedColumns" color="primary"></mat-header-row>
 		<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 	</mat-table>
-	<mat-paginator [pageSize] ="3" [pageSizeOptions] = "[2,3,5]" [showFirstLastButtons] ="true"></mat-paginator>
+	<mat-paginator [pageSize] ="10" [pageSizeOptions] = "[10,20,50]" [showFirstLastButtons] ="true"></mat-paginator>
 </div>

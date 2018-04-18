@@ -13,48 +13,78 @@ import 'rxjs/add/operator/debounceTime';
 	selector: 'usertable',
 	templateUrl: './usertable.component.html',
  	styleUrls: ['./usertable.component.css']
-})
+}) 
 
 export class UsertableComponent implements OnInit {
 	@ViewChild(MatSort) sort: MatSort;
 	@ViewChild(MatPaginator) paginator: MatPaginator;
-	@ViewChild('filter') filter: ElementRef;
+
 
 	dataSource;
-	displayedColumns = ['name' , 'email', 'phone', 'company'];
-	
+	displayedColumns = [ 'owner', 'title' , 'location', 'jobcode', 'client', 'status', 'applicants', 'created'];
+	 
  	constructor(private userService: UserService) { }
 
  	ngOnInit() {
  	this.userService.getUser().subscribe(results => {
  		if(!results){
  			return;
- 		}ElementRef
+ 		}
  		this.dataSource = new MatTableDataSource(results);
+ 		this.dataSource.sortingDataAccessor = (item, property) => {
+ 			switch(property){
+ 				case 'title' : return item.job.name;
+ 				break;
+ 				case 'owner' : return item.jobmembers.fName + " "+ item.jobmembers.lName;
+ 				break;
+ 				case 'location' : return item.job.joblocation;
+ 				break;
+ 				case 'jobcode' : return item.job.jobcode;
+ 				break;
+ 				case 'client' : return item.job.clientName;
+ 				break;
+ 				case 'status' : return item.job.jobStatus;
+ 				break;
+ 				case 'applicants' : return Number(item.job.applicants);
+ 				break;
+ 				case 'created' : 	return  new Date(item.job.date_entered);
+ 				break;
+
+ 				default: return item[property];
+ 				break;
+ 			}
+
+ 		}
 		this.dataSource.sort = this.sort;
 		this.dataSource.paginator = this.paginator;
 
  	});
- 	Observable.fromEvent(this.filter.nativeElement, 'keyup')
-        .debounceTime(150)
-        .distinctUntilChanged()
-        .subscribe(() => {
-          if (!this.dataSource) { return; }
-          console.log(this.filter.nativeElement);
-          this.dataSource.filter = this.filter.nativeElement.value;
-        });
- 	
-
  	
   }
+  onSearchChange(filter: string, datatype: string){
+  		if(datatype == 'owner'){
+        	this.dataSource.filterPredicate = (data: User, filter: string) => (data.jobmembers.fName + " "+ data.jobmembers.lName).toLowerCase().indexOf(filter.toLowerCase()) != -1;
+          }else if(datatype == 'jobname'){
+        	this.dataSource.filterPredicate = (data: User, filter: string) => data.job.name.toLowerCase().indexOf(filter.toLowerCase()) != -1;
+          }else if(datatype == 'location'){
+        	this.dataSource.filterPredicate = (data: User, filter: string) => data.job.joblocation.toLowerCase().indexOf(filter.toLowerCase()) != -1;
+          }else if(datatype == 'status'){
+        	this.dataSource.filterPredicate = (data: User, filter: string) => data.job.jobStatus.toLowerCase().indexOf(filter.toLowerCase()) != -1;
+          }
+          else if(datatype == 'jobcode'){
+        	this.dataSource.filterPredicate = (data: User, filter: string) => data.job.jobcode.toLowerCase().indexOf(filter.toLowerCase()) != -1;
+          }
+          this.dataSource.filter = filter;
+  }
 
-}ElementRef
+}
 /*
 export class UserDataSource extends DataSource<any> {
 	constructor(private userService: UserService){
 		super();
 	}
 
+Chaim_McDermott@dana.io
 	connect(): Observable<User[]>{
 		return this.userService.getUser();
 	}
