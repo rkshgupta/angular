@@ -1,0 +1,44 @@
+<div class="example-container mat-elevation-z8">
+	<div class="example-container input">
+    	<mat-form-field>
+      		<input matInput #filter placeholder="Filter users">
+    	</mat-form-field>
+  	</div>
+	<mat-table [dataSource] = "dataSource" matSort matSortActive="name" matSortDirection="asc" matSortDisableClear>
+		<ng-container matColumnDef="name">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+			<mat-form-field>
+				<input matInput placeholder="">
+			</mat-form-field>
+			<mat-cell *matCellDef="let user">{{user.name}}</mat-cell>
+		</ng-container> @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+
+		<ng-container matColumnDef="email">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+			<mat-form-field>
+				<input matInput placeholder="">
+			</mat-form-field>
+			<mat-cell *matCellDef="let user">{{user.email}}</mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="phone">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Phone</mat-header-cell>
+			<mat-form-field>
+				<input matInput placeholder="">
+		@ViewChild('filter') filter: ElementRef;	</mat-form-field>
+			<mat-cell *matCellDef="let user">{{user.phone}}</mat-cell>
+		</ng-container>
+		<ng-container matColumnDef="company">
+			<mat-header-cell *matHeaderCellDef mat-sort-header>Company</mat-header-cell>
+			<mat-form-field>
+				<input matInput placeholder="">
+			</mat-form-field>
+			<mat-cell *matCellDef="let user">{{user.company.name}}</mat-cell>
+		</ng-container>
+		<mat-header-row *matHeaderRowDef="displayedColumns" color="primary"><mat-form-field>
+				<input matInput placeholder="Hello" value="sfasfsa">
+			</mat-form-field></mat-header-row>
+		<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+	</mat-table>
+	<mat-paginator [pageSize] ="3" [pageSizeOptions] = "[2,3,5]" [showFirstLastButtons] ="true"></mat-paginator>
+</div>
